@@ -1,6 +1,6 @@
 {
     "name": "auto-detect-component",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Detect UI components used in your project automatically.",
     "bin": {
         "adc": "./bin/adc"
