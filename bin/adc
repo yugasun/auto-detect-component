@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const path = require('path');
+const chalk = require('chalk');
+const AutoDetect = require('../dist/auto-detect').default;
+
+program
+    .version('0.0.1')
+    .option('-d, --dir <dir>', 'Detect directory')
+    .option('-p, --prefix <prefix>', 'Component prefix')
+    .option('-e, --ext <ext>', 'File extension')
+    .parse(process.argv);
+
+console.log(' Current detect directory: ', program.dir);
+console.log(' Component prefix: ', program.prefix);
+console.log(' Component file ext: ', program.ext);
+
+const appPath = path.join(process.cwd(), program.dir);
+
+const autoDetect = new AutoDetect({
+    appPath,
+    compPrefix: program.prefix,
+    fileExt: program.ext || '.vue',
+});
+
+const comps = autoDetect.getCompUse();
+
+console.log(chalk.bgGreen(chalk.black(' Detect Result: ')));
+console.log(comps);

@@ -1,0 +1,34 @@
+{
+    "name": "auto-detect-component",
+    "version": "0.0.1",
+    "description": "Detect UI components used in your project automatically.",
+    "bin": {
+        "adc": "./bin/adc"
+    },
+    "scripts": {
+        "dist": "babel src -d dist",
+        "test": "bin/adc -d demo -p 'a-' -e '.vue'"
+    },
+    "author": "yugasun",
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "^2.4.2",
+        "commander": "^2.19.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.2.2",
+        "@babel/preset-env": "^7.2.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yugasun/auto-detect-component.git"
+    },
+    "keywords": [
+        "auto-detect-component"
+    ],
+    "bugs": {
+        "url": "https://github.com/yugasun/auto-detect-component/issues"
+    },
+    "homepage": "https://github.com/yugasun/auto-detect-component#readme"
+}
