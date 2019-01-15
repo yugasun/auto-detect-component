@@ -7,7 +7,8 @@
     },
     "scripts": {
         "dist": "babel src -d dist",
-        "test": "bin/adc -d demo -p 'a-' -e '.vue'"
+        "test": "bin/adc -d demo -p 'a-' -e '.vue'",
+        "prepublish": "npm run dist"
     },
     "author": "yugasun",
     "license": "MIT",
