@@ -59,7 +59,7 @@ function () {
           var subDirPath = _path.default.join(dirPath, f); // not supposed cache sub vue files variables, it will case stack overflow.
 
 
-          _this.initVueFiles(subDirPath);
+          _this.initCompFiles(subDirPath);
         } else if (f.indexOf(_this.fileExt) !== -1) {
           _this.compFiles.push(filename);
         }

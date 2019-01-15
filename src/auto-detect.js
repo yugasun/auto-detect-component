@@ -19,7 +19,7 @@ export default class AutoDetect {
             if (stat.isDirectory()) {
                 const subDirPath = path.join(dirPath, f);
                 // not supposed cache sub vue files variables, it will case stack overflow.
-                this.initVueFiles(subDirPath);
+                this.initCompFiles(subDirPath);
             } else if (f.indexOf(this.fileExt) !== -1) {
                 this.compFiles.push(filename);
             }
