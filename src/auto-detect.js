@@ -65,7 +65,7 @@ import {
 
 const UIPlugin = {};
 
-UIImport.install = (Vue) => {
+UIPlugin.install = (Vue) => {
     ${useStr.join('\n    ')}
 };
 
