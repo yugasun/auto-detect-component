@@ -1,20 +1,21 @@
 {
     "name": "auto-detect-component",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "description": "Detect UI components used in your project automatically.",
     "bin": {
         "adc": "./bin/adc"
     },
     "scripts": {
         "dist": "babel src -d dist",
-        "test": "bin/adc -d demo -p 'a-' -e '.vue'",
+        "test": "bin/adc -d demo -u 'ant-design-vue' -o plugin",
         "prepublish": "npm run dist"
     },
     "author": "yugasun",
     "license": "MIT",
     "dependencies": {
         "chalk": "^2.4.2",
-        "commander": "^2.19.0"
+        "commander": "^2.19.0",
+        "uppercamelcase": "^3.0.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.2.3",

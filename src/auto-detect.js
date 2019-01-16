@@ -1,13 +1,16 @@
 import fs from 'fs';
 import path from 'path';
+import upperCamelCase from 'uppercamelcase';
+import UIMap from './config/ui-map';
 
 export default class AutoDetect {
-    constructor({ appPath, compPrefix, fileExt = '.vue' }) {
+    constructor({ appPath, uiName, fileExt = '.vue' }) {
         this.appPath = appPath;
-        this.compPrefix = compPrefix;
-        this.compReg = new RegExp(`<${compPrefix}([a-zA-Z-]+)`, 'ig');
+        this.uiName = uiName;
         this.compFiles = [];
         this.fileExt = fileExt;
+        this.compPrefix = UIMap[uiName];
+        this.compReg = new RegExp(`<${this.compPrefix}([a-zA-Z-]+)`, 'ig');
     }
 
     initCompFiles(dirPath) {
@@ -34,7 +37,7 @@ export default class AutoDetect {
             const content = fs.readFileSync(filename);
 
             const res = (content.toString().match(this.compReg) || []).map(
-                (item) => item.replace('<', ''),
+                (item) => item.replace(`<${this.compPrefix}`, ''),
             );
 
             useComps.push(...res);
@@ -43,6 +46,32 @@ export default class AutoDetect {
         // unique use component
         useComps = Array.from(new Set(useComps));
 
-        return useComps;
+        return useComps.map((c) => upperCamelCase(c));
+    }
+
+    createUIPlugin(useComps) {
+        const uiList = require(`./comp-list/${this.uiName}`).default;
+        const useStr = [];
+        const shouldUseList = useComps.filter((c) => uiList.indexOf(c) !== -1);
+        const importStr = shouldUseList.join(', ');
+        shouldUseList.forEach((item) => {
+            useStr.push(`Vue.use(${item});`);
+        });
+
+        const pluginTpl = `
+import {
+    ${importStr}
+} from '${this.uiName}';
+
+const UIPlugin = {};
+
+UIImport.install = (Vue) => {
+    ${useStr.join('\n    ')}
+};
+
+export default UIPlugin;
+        `;
+
+        return pluginTpl;
     }
 }

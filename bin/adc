@@ -2,29 +2,60 @@
 
 const program = require('commander');
 const path = require('path');
+const fs = require('fs');
 const chalk = require('chalk');
 const AutoDetect = require('../dist/auto-detect').default;
 
 program
     .version('0.0.1')
     .option('-d, --dir <dir>', 'Detect directory')
-    .option('-p, --prefix <prefix>', 'Component prefix')
-    .option('-e, --ext <ext>', 'File extension')
-    .parse(process.argv);
+    .option('-u, --ui <ui>', 'UI Toolkit Name')
+    .option('-e, --ext <ext>', 'File extension', '.vue')
+    .option(
+        '-o, --output <output>',
+        'UI Plugin output directory, default current command pwd',
+    )
+    .option('-n, --name <name>', 'UI Plugin output file name', 'ui-plugin');
+
+program.on('--help', function() {
+    console.log('');
+    console.log('Examples:');
+    console.log("  $ adc -d demo -u 'ant-design-vue' -o plugin");
+});
+
+program.parse(process.argv);
+
+if (!program.dir) {
+    throw new Error('Detect directory must be set up.');
+}
+if (!program.ui) {
+    throw new Error('UI Toolkit Name must be set up.');
+}
 
 console.log(' Current detect directory: ', program.dir);
-console.log(' Component prefix: ', program.prefix);
-console.log(' Component file ext: ', program.ext);
+console.log(' UI Toolkit Name: ', program.ui);
 
 const appPath = path.join(process.cwd(), program.dir);
 
 const autoDetect = new AutoDetect({
     appPath,
-    compPrefix: program.prefix,
-    fileExt: program.ext || '.vue',
+    uiName: program.ui,
+    fileExt: program.ext,
 });
 
 const comps = autoDetect.getCompUse();
+const pluginStr = autoDetect.createUIPlugin(comps);
+const outputDir = program.output
+    ? path.join(process.cwd(), program.output)
+    : process.cwd();
 
-console.log(chalk.bgGreen(chalk.black(' Detect Result: ')));
-console.log(comps);
+// if output directory not exist, auto create it.
+if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+}
+
+const outputFilename = path.join(outputDir, `${program.name}.js`);
+
+fs.writeFileSync(outputFilename, pluginStr);
+
+console.log(chalk.bgGreen(chalk.black(' Auto create UI plugin success. ')));
