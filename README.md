@@ -16,7 +16,16 @@ adc --help
 
 # run command
 # demo is the project directory you need to detect
-adc -d demo -p 'a-' -e '.vue'
+adc -d demo -u 'element-ui' -o plugin
+```
+
+Then use the created plugin file as [Vue plugin](https://vuejs.org/v2/guide/plugins.html):
+
+```js
+import Vue from 'vue';
+import UIPlugin from './plugin/ui-plugin';
+
+Vue.use(UIPlugin);
 ```
 
 ## License
