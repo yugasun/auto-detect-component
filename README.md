@@ -28,7 +28,13 @@ import UIPlugin from './plugin/ui-plugin';
 Vue.use(UIPlugin);
 ```
 
+## TODO
+
+[ ] Unit test.
+
 ## Support UI Toolkit
+
+It supports two UI toolkit for Vue:
 
 * [element-ui](https://github.com/ElemeFE/element)
 * [ant-design-vue](https://github.com/vueComponent/ant-design-vue)

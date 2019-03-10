@@ -1,4 +1,4 @@
-export default [
+const commonComps = [
     'Affix',
     'Anchor',
     'AutoComplete',
@@ -56,3 +56,41 @@ export default [
     'Comment',
     'ConfigProvider',
 ];
+
+const specialComps = [
+    {
+        name: 'Message',
+        value: 'message',
+    },
+    {
+        name: 'Notification',
+        value: 'notification',
+    },
+    {
+        name: 'Modal',
+        value: 'Modal',
+    },
+];
+
+const specialCompsUse = {
+    message: `
+    Vue.prototype.$message = message;
+    `,
+    notification: `
+    Vue.prototype.$info = Modal.info;
+    Vue.prototype.$success = Modal.success;
+    Vue.prototype.$error = Modal.error;
+    Vue.prototype.$warning = Modal.warning;
+    Vue.prototype.$confirm = Modal.confirm;
+    `,
+    Modal: `
+    Vue.prototype.$notification = notification;
+    `,
+
+};
+
+export default {
+    commonComps,
+    specialComps,
+    specialCompsUse,
+};

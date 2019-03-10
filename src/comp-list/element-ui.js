@@ -1,4 +1,4 @@
-export default [
+const commonComps = [
     'Pagination',
     'Dialog',
     'Autocomplete',
@@ -69,3 +69,47 @@ export default [
     'Main',
     'Footer',
 ];
+
+const specialComps = [
+    {
+        name: 'Loading',
+        value: 'Loading',
+    },
+    {
+        name: 'MessageBox',
+        value: 'MessageBox',
+    },
+    {
+        name: 'Notification',
+        value: 'Notification',
+    },
+    {
+        name: 'Message',
+        value: 'Message',
+    },
+];
+
+const specialCompsUse = {
+    Loading: `
+    Vue.use(Loading.directive);
+    Vue.prototype.$loading = Loading.service;
+    `,
+    MessageBox: `
+    Vue.prototype.$msgbox = MessageBox;
+    Vue.prototype.$alert = MessageBox.alert;
+    Vue.prototype.$confirm = MessageBox.confirm;
+    Vue.prototype.$prompt = MessageBox.prompt;
+    `,
+    Notification: `
+    Vue.prototype.$notify = Notification;
+    `,
+    Message: `
+    Vue.prototype.$message = Message;
+    `,
+};
+
+export default {
+    commonComps,
+    specialComps,
+    specialCompsUse,
+};

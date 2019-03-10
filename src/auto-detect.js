@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import upperCamelCase from 'uppercamelcase';
+import inquirer from 'inquirer';
 import UIMap from './config/ui-map';
 
 export default class AutoDetect {
@@ -49,14 +50,29 @@ export default class AutoDetect {
         return useComps.map((c) => upperCamelCase(c));
     }
 
-    createUIPlugin(useComps) {
-        const uiList = require(`./comp-list/${this.uiName}`).default;
-        const useStr = [];
-        const shouldUseList = useComps.filter((c) => uiList.indexOf(c) !== -1);
-        const importStr = shouldUseList.join(', ');
+    async createUIPlugin(useComps) {
+        const { commonComps, specialComps, specialCompsUse } = require(`./comp-list/${this.uiName}`).default;
+        let useStr = [];
+        let shouldUseList = useComps.filter((c) => commonComps.indexOf(c) !== -1);
+
+        // generate special components use
+        const { special } = await inquirer.prompt({
+            type: 'checkbox',
+            name: 'special',
+            message: 'Please select special components will use?',
+            choices: specialComps,
+        });
+
+        let importStr = shouldUseList.join(', ');
         shouldUseList.forEach((item) => {
             useStr.push(`Vue.use(${item});`);
         });
+
+        importStr += special.join(', ');
+
+        special.forEach((s) => {
+            useStr.push(specialCompsUse[s]);
+        })
 
         const pluginTpl = `
 import {
